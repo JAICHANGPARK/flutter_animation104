@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 
 class BrickPage extends StatefulWidget {
   @override
@@ -12,86 +13,151 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 5));
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 5),
+    );
+
     tween = Tween(begin: 0.0, end: 1.0);
 
     animationController.repeat();
   }
 
-  //Bricks one
-  Animation get animOne => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.0, 0.125, curve: Curves.linear)));
+  //Brick 1
+  Animation get animOne => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.0,
+            0.125,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
 
-  Animation get animTwo => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.125, 0.25, curve: Curves.linear)));
+  //Brick 1
+  Animation get animTwo => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.125,
+            0.25,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
 
-  //TODO brick Two
-  Animation get animThree => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.25, 0.375, curve: Curves.linear)));
+  //Brick 2
+  Animation get animThree => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.25,
+            0.375,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
 
-  //TODO brick Three
-  Animation get animFour => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.375, 0.5, curve: Curves.linear)));
+  //Brick 3
+  Animation get animFour => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.375,
+            0.5,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
 
-  //TODO brick Four
-  Animation get animFive => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.5, 0.625, curve: Curves.linear)));
+  //Brick 4
+  Animation get animFive => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.5,
+            0.625,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
 
-  //TODO brick Four
-  Animation get animSix => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.625, 0.75, curve: Curves.linear)));
+  //Brick 4
+  Animation get animSix => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.625,
+            0.750,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
 
-  //TODO brick Seven
-  Animation get animSeven => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.75, 0.875, curve: Curves.linear)));
+  //Brick 3
+  Animation get animSeven => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.750,
+            0.875,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
 
-  //TODO brick Seven
-  Animation get animEight => tween.animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(0.875, 1.0, curve: Curves.linear)));
+  //Brick 2
+  Animation get animEight => tween.animate(
+        CurvedAnimation(
+          curve: Interval(
+            0.875,
+            1.0,
+            curve: Curves.linear,
+          ),
+          parent: animationController,
+        ),
+      );
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter Animation 104"),
+        title: Text("Animation Series - Brick"),
       ),
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            AnimationBrick(
-              animation: [animOne, animTwo],
-              animationController: animationController,
+            AnimatedBrick(
+              animations: [animOne, animTwo],
+              controller: animationController,
               marginLeft: 0.0,
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               isClockWise: true,
             ),
-            AnimationBrick(
-              animation: [animThree, animEight],
-              animationController: animationController,
+            AnimatedBrick(
+              animations: [animThree, animEight],
+              controller: animationController,
               marginLeft: 0.0,
               isClockWise: false,
             ),
-            AnimationBrick(
-              animation: [animFour, animSeven],
-              animationController: animationController,
+            AnimatedBrick(
+              animations: [animFour, animSeven],
+              controller: animationController,
               marginLeft: 30.0,
               isClockWise: true,
             ),
-            AnimationBrick(
-              animation: [animFive, animSix],
-              animationController: animationController,
+            AnimatedBrick(
+              animations: [animFive, animSix],
+              controller: animationController,
               marginLeft: 30.0,
               isClockWise: false,
             ),
@@ -100,30 +166,23 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    animationController.dispose();
-    super.dispose();
-  }
 }
 
-class AnimationBrick extends AnimatedWidget {
-  final AnimationController animationController;
-  final List<Animation> animation;
+class AnimatedBrick extends AnimatedWidget {
+  final AnimationController controller;
+  final List<Animation> animations;
   final double marginLeft;
-  Alignment alignment;
+  final Alignment alignment;
   final bool isClockWise;
 
-  AnimationBrick({
-    Key key,
-    this.animationController,
-    this.animation,
-    this.marginLeft,
-    this.alignment = Alignment.centerRight,
-    this.isClockWise,
-  }) : super(key: key, listenable: animationController);
+  AnimatedBrick(
+      {Key key,
+      this.controller,
+      this.animations,
+      this.marginLeft,
+      this.alignment = Alignment.centerRight,
+      this.isClockWise})
+      : super(key: key, listenable: controller);
 
   Matrix4 clockWise(animation) =>
       Matrix4.rotationZ(animation.value * math.pi * 2.0 * 0.5);
@@ -134,24 +193,25 @@ class AnimationBrick extends AnimatedWidget {
   @override
   Widget build(BuildContext context) {
     var firstTransformation, secondTransformation;
+
     if (isClockWise) {
-      firstTransformation = clockWise(animation[0]);
-      secondTransformation = clockWise(animation[1]);
+      firstTransformation = clockWise(animations[0]);
+      secondTransformation = clockWise(animations[1]);
     } else {
-      firstTransformation = antiClockWise(animation[0]);
-      secondTransformation = antiClockWise(animation[1]);
+      firstTransformation = antiClockWise(animations[0]);
+      secondTransformation = antiClockWise(animations[1]);
     }
 
-    // TODO: implement build
     return Transform(
-      alignment: alignment,
       transform: firstTransformation,
+      alignment: alignment,
       child: Transform(
-          transform: secondTransformation,
-          alignment: alignment,
-          child: Brick(
-            marginLeft: marginLeft,
-          )),
+        transform: secondTransformation,
+        alignment: alignment,
+        child: Brick(
+          marginLeft: marginLeft,
+        ),
+      ),
     );
   }
 }
@@ -163,14 +223,14 @@ class Brick extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       margin: EdgeInsets.only(left: marginLeft),
-      width: 40.0,
       height: 10.0,
-//      color: Colors.green,
+      width: 40.0,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0), color: Colors.green),
+        borderRadius: BorderRadius.circular(15.0),
+        color: Colors.green,
+      ),
     );
   }
 }
