@@ -12,29 +12,38 @@ class _BrickPageState extends State<BrickPage> {
       appBar: AppBar(
         title: Text("Animation 104"),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Brick(),
-          Brick(),
-          Brick(),
-          Brick(),
-        ],
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Brick(),
+            Brick(),
+            Brick(),
+            Brick(),
+          ],
+        ),
       ),
     );
   }
 }
 
 class Brick extends StatelessWidget {
+
+  final double marginLeft;
+
+  Brick({this.marginLeft = 15.0});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
+      margin: EdgeInsets.only(left: marginLeft),
       width: 40.0,
       height: 10.0,
-      color: Colors.green,
+//      color: Colors.green,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0), color: Colors.green),
+          borderRadius: BorderRadius.circular(15.0),
+          color: Colors.green),
     );
   }
 }
