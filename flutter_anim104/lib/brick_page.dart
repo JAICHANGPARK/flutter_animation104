@@ -75,21 +75,25 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
               animationController: animationController,
               marginLeft: 15.0,
               alignment: Alignment.centerRight,
+              isClockWise: true,
             ),
             AnimationBrick(
               animation: [animThree, animEight],
               animationController: animationController,
               marginLeft: 15.0,
+              isClockWise: false,
             ),
             AnimationBrick(
               animation: [animFour, animEight],
               animationController: animationController,
               marginLeft: 15.0,
+              isClockWise: true,
             ),
             AnimationBrick(
               animation: [animFive, animSix],
               animationController: animationController,
               marginLeft: 15.0,
+              isClockWise: false,
             ),
           ],
         ),
@@ -110,14 +114,16 @@ class AnimationBrick extends AnimatedWidget {
   final List<Animation> animation;
   final double marginLeft;
   Alignment alignment;
+  final bool isClockWise;
 
-  AnimationBrick(
-      {Key key,
-      this.animationController,
-      this.animation,
-      this.marginLeft,
-      this.alignment = Alignment.centerRight})
-      : super(key: key, listenable: animationController);
+  AnimationBrick({
+    Key key,
+    this.animationController,
+    this.animation,
+    this.marginLeft,
+    this.alignment = Alignment.centerRight,
+    this.isClockWise,
+  }) : super(key: key, listenable: animationController);
 
   Matrix4 clockWise(animation) =>
       Matrix4.rotationZ(animation.value * math.pi * 2.0 * 0.5);
@@ -125,13 +131,19 @@ class AnimationBrick extends AnimatedWidget {
   @override
   Widget build(BuildContext context) {
     var firstTransformation = clockWise(animation[0]);
+    var secondTransformation = clockWise(animation[1]);
+
     // TODO: implement build
     return Transform(
       alignment: alignment,
-        transform: firstTransformation,
-        child: Brick(
-          marginLeft: marginLeft,
-        ));
+      transform: firstTransformation,
+      child: Transform(
+          transform: secondTransformation,
+          alignment: alignment,
+          child: Brick(
+            marginLeft: marginLeft,
+          )),
+    );
   }
 }
 
