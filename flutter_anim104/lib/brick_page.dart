@@ -17,6 +17,8 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
     animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 5));
     tween = Tween(begin: 0.0, end: 1.0);
+
+    animationController.repeat();
   }
 
   //Bricks one
@@ -72,6 +74,7 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
               animation: [animOne, animTwo],
               animationController: animationController,
               marginLeft: 15.0,
+              alignment: Alignment.centerRight,
             ),
             AnimationBrick(
               animation: [animThree, animEight],
@@ -93,24 +96,38 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    animationController.dispose();
+    super.dispose();
+  }
 }
 
 class AnimationBrick extends AnimatedWidget {
   final AnimationController animationController;
   final List<Animation> animation;
   final double marginLeft;
+  Alignment alignment;
 
   AnimationBrick(
-      {Key key, this.animationController, this.animation, this.marginLeft})
+      {Key key,
+      this.animationController,
+      this.animation,
+      this.marginLeft,
+      this.alignment = Alignment.centerRight})
       : super(key: key, listenable: animationController);
 
-  Matrix4 firstTransformation(animation) =>
+  Matrix4 clockWise(animation) =>
       Matrix4.rotationZ(animation.value * math.pi * 2.0 * 0.5);
 
   @override
   Widget build(BuildContext context) {
+    var firstTransformation = clockWise(animation[0]);
     // TODO: implement build
     return Transform(
+      alignment: alignment,
         transform: firstTransformation,
         child: Brick(
           marginLeft: marginLeft,
