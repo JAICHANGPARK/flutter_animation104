@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class BrickPage extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: Duration(seconds: 5));
     tween = Tween(begin: 0.0, end: 1.0);
   }
+
   //Bricks one
   Animation get animOne => tween.animate(CurvedAnimation(
       parent: animationController,
@@ -56,7 +58,6 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
       parent: animationController,
       curve: Interval(0.875, 1.0, curve: Curves.linear)));
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,14 +68,53 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Brick(),
-            Brick(),
-            Brick(),
-            Brick(),
+            AnimationBrick(
+              animation: [animOne, animTwo],
+              animationController: animationController,
+              marginLeft: 15.0,
+            ),
+            AnimationBrick(
+              animation: [animThree, animEight],
+              animationController: animationController,
+              marginLeft: 15.0,
+            ),
+            AnimationBrick(
+              animation: [animFour, animEight],
+              animationController: animationController,
+              marginLeft: 15.0,
+            ),
+            AnimationBrick(
+              animation: [animFive, animSix],
+              animationController: animationController,
+              marginLeft: 15.0,
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+class AnimationBrick extends AnimatedWidget {
+  final AnimationController animationController;
+  final List<Animation> animation;
+  final double marginLeft;
+
+  AnimationBrick(
+      {Key key, this.animationController, this.animation, this.marginLeft})
+      : super(key: key, listenable: animationController);
+
+  Matrix4 firstTransformation(animation) =>
+      Matrix4.rotationZ(animation.value * math.pi * 2.0 * 0.5);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Transform(
+        transform: firstTransformation,
+        child: Brick(
+          marginLeft: marginLeft,
+        ));
   }
 }
 
