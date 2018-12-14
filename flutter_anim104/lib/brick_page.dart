@@ -73,26 +73,26 @@ class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin {
             AnimationBrick(
               animation: [animOne, animTwo],
               animationController: animationController,
-              marginLeft: 15.0,
+              marginLeft: 0.0,
               alignment: Alignment.centerRight,
               isClockWise: true,
             ),
             AnimationBrick(
               animation: [animThree, animEight],
               animationController: animationController,
-              marginLeft: 15.0,
+              marginLeft: 0.0,
               isClockWise: false,
             ),
             AnimationBrick(
-              animation: [animFour, animEight],
+              animation: [animFour, animSeven],
               animationController: animationController,
-              marginLeft: 15.0,
+              marginLeft: 30.0,
               isClockWise: true,
             ),
             AnimationBrick(
               animation: [animFive, animSix],
               animationController: animationController,
-              marginLeft: 15.0,
+              marginLeft: 30.0,
               isClockWise: false,
             ),
           ],
@@ -128,10 +128,19 @@ class AnimationBrick extends AnimatedWidget {
   Matrix4 clockWise(animation) =>
       Matrix4.rotationZ(animation.value * math.pi * 2.0 * 0.5);
 
+  Matrix4 antiClockWise(animation) =>
+      Matrix4.rotationZ(-(animation.value * math.pi * 2.0 * 0.5));
+
   @override
   Widget build(BuildContext context) {
-    var firstTransformation = clockWise(animation[0]);
-    var secondTransformation = clockWise(animation[1]);
+    var firstTransformation, secondTransformation;
+    if (isClockWise) {
+      firstTransformation = clockWise(animation[0]);
+      secondTransformation = clockWise(animation[1]);
+    } else {
+      firstTransformation = antiClockWise(animation[0]);
+      secondTransformation = antiClockWise(animation[1]);
+    }
 
     // TODO: implement build
     return Transform(
